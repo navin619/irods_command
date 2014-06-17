@@ -7,7 +7,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-
+/*
+ * filefrom : The input file from irods to  be transfered 
+ * fileto   : The output file to be written to in the local drive
+ * start    : the offset position from where the file has to be copied
+ * finish   : the final offset position to which the file has to be copied
+*/
 void partial_transfer(char *filefrom,char *fileto , int start, int finish)
 {
 FILE *FI, *FO;
@@ -52,6 +57,10 @@ FILE *FI, *FO;
     fclose(FO);
 }
 
+/*
+ * filefrom : The input file from irods to  be transfered 
+ * fileto   : The output file to be written to in the local drive
+ */
 void full_transfer(char *filefrom,char *fileto )
 {
 	FILE *FI, *FO;
@@ -116,26 +125,26 @@ main(int argc, char **argv)
 while ((c = getopt(argc, argv, "i:o:d:r:")) != -1)
 {
 switch (c) {
-             
+   // input file from irods
    case 'i':
 	inputfile=optarg;
 	printf("the input file %s\n",optarg);
 	pflag = 1;
 	break;
-
+   // output file in the local drive
     case 'o':
 	outputfile=optarg;
 	fflag = 1;
 	printf("the output file %s\n",optarg);
 	break;
-
+   // help command
      case 'h':
 	hflag = 1;
-	printf("-f <irods :filename> <filename> (for full transfer of a file from irods to local directory )\n");
-	printf("-p <irods :filename> <filename> <number of characters> (for partial transfer of a file from irods to local directory )\n");		
+	printf("-i <irods :filename> -o < local drive filename> (for full transfer of a file from irods to local directory )\n");
+	printf("-i <irods :filename> -o < local drive filename> -r <range ofnumber of characters> (for partial transfer of a file from irods to local directory )\n");		
 	break;
-
-case 'r':
+   // range to be copied
+     case 'r':
 	printf("the range file %s \n",optarg);
 	from=strtok(optarg, search);
 	to =strtok(NULL, search);
@@ -151,12 +160,14 @@ case 'r':
 
 }
 
-
+// file to be copied completly
 if(rflag == 0)
 {
      full_transfer(inputfile, outputfile);
 
 }
+
+// file to be copied partially
 if(rflag == 1)
 {
      partial_transfer(inputfile, outputfile,atoi(from),atoi(to));
