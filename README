@@ -1,10 +1,15 @@
 This is C program is used to transfer data from irods to local direcotry.
 
+-i : input file
+-o : outfile 
+-r : range
+-h : help
+
 command format:
 for complete transfer of file.
-./newtest -f <filename> <filename> 
+./newtest -i <filename> -o <filename>
 
 for partial transfer
-./newtest -f <filename> <filename> <number of characters>
+./newtest -i <filename> -o <filename> -r <range>
 
 
